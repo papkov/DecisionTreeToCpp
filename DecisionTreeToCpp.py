@@ -20,7 +20,7 @@ def get_code(tree, feature_names, function_name="decision_tree"):
     def recurse(left, right, threshold, features, node, tabs):
         code = ''
         if threshold[node] != -2:
-            code += '%sif (feature_vector->at(%s) <= %s) {\n' % (tabs * '\t', feature_names.index(features[node]), round(threshold[node], 2))
+            code += '%sif (feature_vector.at(%s) <= %s) {\n' % (tabs * '\t', feature_names.index(features[node]), round(threshold[node], 2))
             tabs += 1
 
             if left[node] != -1:
@@ -39,7 +39,7 @@ def get_code(tree, feature_names, function_name="decision_tree"):
 
         return code
 
-    code = "inline int %s(std::vector<double> * feature_vector) \n{\n%s}" \
+    code = "inline int %s(const std::vector<double> & feature_vector) \n{\n%s}" \
            % (function_name, recurse(left, right, threshold, features, 0, 1))
     return code
 
