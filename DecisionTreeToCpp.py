@@ -68,7 +68,7 @@ Simply include this file to your project and use it
 
 """ % (feature_string, classes_string)
 
-    code = preamble + get_code(tree, feature_names, function_name)
+    code = '%s#include <vector>\n\n%s' % (preamble, get_code(tree, feature_names, function_name))
 
     with open(function_name + '.h', "w") as f:
         f.write(code)

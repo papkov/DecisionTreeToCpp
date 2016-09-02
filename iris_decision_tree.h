@@ -18,6 +18,8 @@ It returns index of predicted class:
 Simply include this file to your project and use it
 */
 
+#include <vector>
+
 inline int iris_decision_tree(std::vector<double> * feature_vector) 
 {
 	if (feature_vector->at(2) <= 2.45) {
@@ -49,11 +51,11 @@ inline int iris_decision_tree(std::vector<double> * feature_vector)
 		}
 		else {
 			if (feature_vector->at(2) <= 4.85) {
-				if (feature_vector->at(1) <= 3.1) {
-					return 2;
+				if (feature_vector->at(0) <= 5.95) {
+					return 1;
 				}
 				else {
-					return 1;
+					return 2;
 				}
 			}
 			else {
