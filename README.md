@@ -5,5 +5,3 @@ It can be useful if you want only to use decision rules produced by powerful and
 This code was written as a modification of Daniele's answer in StackOverflow topic "how to extract the decision rules from scikit-learn decision-tree"
 http://stackoverflow.com/questions/20224526/how-to-extract-the-decision-rules-from-scikit-learn-decision-tree
 http://stackoverflow.com/users/1885917/daniele
-
-This is also my first open piece of code, so please do not expect too much - at least it works :)

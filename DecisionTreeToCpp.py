@@ -8,7 +8,7 @@
 # http://stackoverflow.com/questions/20224526/how-to-extract-the-decision-rules-from-scikit-learn-decision-tree
 # http://stackoverflow.com/users/1885917/daniele
 #
-# This is also my first open piece of code, so please do not expect too much - at least it works :)
+
 
 def get_code(tree, feature_names, function_name="decision_tree"):
     left = tree.tree_.children_left
@@ -20,28 +20,27 @@ def get_code(tree, feature_names, function_name="decision_tree"):
     def recurse(left, right, threshold, features, node, tabs):
         code = ''
         if threshold[node] != -2:
-            code += (tabs * "\t") + "if (feature_vector->at(" + str(feature_names.index(features[node])) + ") <= " + str(round(threshold[node], 2)) + " ) {\n"
+            code += '%sif (feature_vector->at(%s) <= %s) {\n' % (tabs * '\t', feature_names.index(features[node]), round(threshold[node], 2))
             tabs += 1
 
             if left[node] != -1:
                 code += recurse(left, right, threshold, features, left[node], tabs)
             tabs -= 1
-            code += (tabs * "\t") + "}\n" + (tabs * "\t") + "else {\n"
+            code += '%s}\n%selse {\n' % (tabs * '\t', tabs * '\t')
 
             tabs += 1
             if right[node] != -1:
                 code += recurse(left, right, threshold, features, right[node], tabs)
             tabs -= 1
-            code += (tabs * "\t") + "}\n"
+            code += '%s}\n' % (tabs * '\t')
 
         else:
-            code += (tabs * "\t") + "return " + str(value[node].argmax()) + ";\n"
+            code += '%sreturn %s;\n' % (tabs * '\t', value[node].argmax())
 
         return code
 
-    code = "inline int %s(std::vector * feature_vector) \n{\n" % function_name
-    code += recurse(left, right, threshold, features, 0, 1)
-    code += "}"
+    code = "inline int %s(std::vector<double> * feature_vector) \n{\n%s}" \
+           % (function_name, recurse(left, right, threshold, features, 0, 1))
     return code
 
 
@@ -49,10 +48,10 @@ def save_code(tree, feature_names, class_names, function_name="decision_tree"):
 
     feature_string = ""
     for i in range(0, len(feature_names)):
-        feature_string += 'feature_vector[' + str(i) + '] - ' + feature_names[i] + '\n'
+        feature_string += 'feature_vector[%s] - %s\n' % (i, feature_names[i])
     classes_string = ""
     for i in range(0, len(class_names)):
-        classes_string += str(i) + ' - ' + class_names[i] + '\n'
+        classes_string += '%s - %s\n' % (i, class_names[i])
 
     preamble = """
 /*
